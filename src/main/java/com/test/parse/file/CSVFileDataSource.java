@@ -4,22 +4,18 @@ import com.test.parse.CO;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.*;
 
-public class CSVFileDataSource extends FileDataSource<CO> {
+public class CSVFileDataSource extends FileDataDataSource<CO> {
     private String separator = ",";
-
-    public CSVFileDataSource(String name) {
-        super(name);
-    }
 
     public String getSeparator() {
         return separator;
@@ -31,12 +27,12 @@ public class CSVFileDataSource extends FileDataSource<CO> {
     }
 
     @Override
-    public List<CO> getData(Class clazz) {
-        InputStream url = getFile();
-        List<String> lines = new BufferedReader(new InputStreamReader(url, Charset.defaultCharset()))
-            .lines()
-            .skip(1)
-            .collect(Collectors.toList());
+    public List<CO> getData(Class clazz) throws FileNotFoundException {
+        java.io.File file = getFile();
+        if (!isValid(file)) {
+            return Collections.emptyList();
+        }
+        List<String> lines = new BufferedReader(new FileReader(file)).lines().skip(1).collect(Collectors.toList());
         return lines.stream().map(line -> {
             CO obj = null;
             try {
@@ -55,4 +51,8 @@ public class CSVFileDataSource extends FileDataSource<CO> {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public boolean isValid(File file) {
+        return (file != null) && file.isFile() && file.getName().endsWith(".csv");
+    }
 }
