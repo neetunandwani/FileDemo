@@ -3,23 +3,13 @@ package com.test;
 import com.test.parse.EmployeeCO;
 import com.test.parse.DataSource;
 import com.test.parse.file.CSVFileDataSource;
-import com.test.parse.file.FileDataDataSource;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public class Application {
-    public static void main(String[] args) throws FileNotFoundException {
-//        File file = Optional.ofNullable(Thread.currentThread().getContextClassLoader().getResource("employee.csv"))
-//            .map(resource -> {
-//                System.out.println(resource.getFile());
-//                return new File(resource.getFile());
-//            }).orElse(null);
-//        System.out.println(file.exists());
-
-        DataSource dataSource = new CSVFileDataSource().setSeparator(",").setName("employee.csv");
+    public static void main(String[] args) throws IOException {
+        DataSource dataSource = new CSVFileDataSource("employee.csv").setSeparator(",");
         List<EmployeeCO> employeeCOList = dataSource.getData(EmployeeCO.class);
         if (!employeeCOList.isEmpty()) {
             EmployeeCO data = employeeCOList.stream()
