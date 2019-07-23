@@ -73,9 +73,9 @@ public class SummaryReportService {
         grouped.forEach((key, value) ->
             {
                 if (value.size() == 2 && value.stream().anyMatch(transaction -> transaction.getType().equals(BUY)) && value.stream().anyMatch(transaction -> transaction.getType().equals(SELL))) {
-                    rows.addAll(intraDayProcessor.process(value));
+                    rows.addAll(intraDayProcessor.apply(value));
                 } else {
-                    rows.addAll(normalProcessor.process(value));
+                    rows.addAll(normalProcessor.apply(value));
                 }
             }
         );

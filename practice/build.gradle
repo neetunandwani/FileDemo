@@ -16,6 +16,8 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.11'
     compile group: 'org.apache.poi', name: 'poi', version: '4.1.0'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.0'
+    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+
 
 }
 
